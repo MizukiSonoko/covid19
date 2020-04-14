@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - run: cp ui-test\dummy.json dist\data/\data.json
+      - run: cp ui-test/dummy.json dist/data/data.json
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -37,27 +37,27 @@ jobs:
   screenshot-safari:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: cp ui-test\dummy.json dist\data/\data.json
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - run: yarn install --frozen-lockfile
-      - run: yarn run test
-      - run: yarn run generate:deploy
-      - run: pip install selenium
-      - run: (python -m http.server --directory ./dist 8000 &)  ; python ./ui-test/screenshot.py
-      - name: Upload screenshot
-        uses: actions/upload-artifact@v1
-        with:
-          name: screenshots
-          path: screenshots
+        - uses: actions/checkout@v2
+        - run: cp ui-test/dummy.json dist/data/data.json
+        - name: Setup Node
+          uses: actions/setup-node@v1
+          with:
+            node-version: '10.x'
+        - name: Cache dependencies
+          uses: actions/cache@v1
+          with:
+            path: ~/.cache/yarn
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-yarn-
+  
+        - run: yarn install --frozen-lockfile
+        - run: yarn run test
+        - run: yarn run generate:deploy
+        - run: pip install selenium
+        - run: (python -m http.server --directory ./dist 8000 &)  ; python ./ui-test/screenshot.py
+        - name: Upload screenshot
+          uses: actions/upload-artifact@v1
+          with:
+            name: screenshots
+            path: screenshots
